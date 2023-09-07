@@ -35,8 +35,16 @@ class Username(AbstractUser):
     )
 
     def __str__(self):
-        return self.wallet_address
+        return self.email
 
     class Meta:
         verbose_name = "Пользователи"
         verbose_name_plural = "Пользователь"
+        
+    def save(self, *args, **kwargs):
+
+        if not self.wallet_address:
+
+            self.wallet_address = secrets.token_hex(6)
+
+        super().save(*args, **kwargs)
